@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
+
+import static org.springframework.http.ResponseEntity.created;
+import static org.springframework.http.ResponseEntity.ok;
+
 @RestController
 @RequiredArgsConstructor
 public class GameController {
@@ -21,7 +26,8 @@ public class GameController {
 
         final GameResponse gameResponse = gameService.createGame();
 
-        return ResponseEntity.created(gameResponse.getUri()).body(gameResponse);
+        return created(URI.create(gameResponse.getUri()))
+                .body(gameResponse);
     }
 
     @GetMapping("/games/{gameId}")
@@ -29,12 +35,15 @@ public class GameController {
 
         final GameResponse gameResponse = gameService.getGame(gameId);
 
-        return ResponseEntity.ok().body(gameResponse);
+        return ok().body(gameResponse);
     }
 
     @PutMapping("/games/{gameId}/pits/{pitId}")
-    public ResponseEntity<GameResponse> move(@PathVariable String gameId, @PathVariable int pitId) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<GameResponse> move(@PathVariable Long gameId, @PathVariable int pitId) {
+
+        final GameResponse gameResponse = gameService.move(gameId, pitId);
+
+        return ok().body(gameResponse);
     }
 
 }

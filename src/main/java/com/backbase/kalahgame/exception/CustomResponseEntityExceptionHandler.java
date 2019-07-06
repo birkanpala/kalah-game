@@ -1,5 +1,6 @@
 package com.backbase.kalahgame.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @ControllerAdvice
+@Slf4j
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
 
@@ -23,6 +25,8 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 
         ApiExceptionResponse response = ApiExceptionResponse.of(HttpStatus.NOT_FOUND, ex.getMessage());
 
+        log.error(ex.getMessage(), ex);
+
         return createResponseEntity(response);
     }
 
@@ -31,6 +35,19 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
                                                                        WebRequest request) {
 
         ApiExceptionResponse response = ApiExceptionResponse.of(HttpStatus.BAD_REQUEST, ex.getMessage());
+
+        log.error(ex.getMessage(), ex);
+
+        return createResponseEntity(response);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public final ResponseEntity<Object> handleIllegalStateException(IllegalStateException ex,
+                                                                       WebRequest request) {
+
+        ApiExceptionResponse response = ApiExceptionResponse.of(HttpStatus.BAD_REQUEST, ex.getMessage());
+
+        log.error(ex.getMessage(), ex);
 
         return createResponseEntity(response);
     }
@@ -56,12 +73,16 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 
         ApiExceptionResponse response = ApiExceptionResponse.of(HttpStatus.BAD_REQUEST, errors);
 
+        log.error(ex.getMessage(), ex);
+
         return createResponseEntity(response);
     }
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleOthers(Exception ex, WebRequest request) {
         ApiExceptionResponse response = ApiExceptionResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+
+        log.error(ex.getMessage(), ex);
 
         return createResponseEntity(response);
     }
