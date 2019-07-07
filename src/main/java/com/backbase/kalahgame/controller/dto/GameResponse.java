@@ -1,4 +1,4 @@
-package com.backbase.kalahgame.model.dto;
+package com.backbase.kalahgame.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
@@ -15,5 +15,5 @@ public class GameResponse {
 
     private String uri;
 
-    private Map<Integer, String> status;
+    private Map<String, String> status;
 }

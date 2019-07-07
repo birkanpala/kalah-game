@@ -1,7 +1,5 @@
 package com.backbase.kalahgame.model;
 
-import lombok.ToString;
-
 import javax.persistence.Embeddable;
 import java.util.Map;
 import java.util.stream.IntStream;
@@ -10,11 +8,9 @@ import static com.backbase.kalahgame.constants.Constants.*;
 import static com.backbase.kalahgame.model.Player.PLAYER_1;
 import static com.backbase.kalahgame.model.Player.PLAYER_2;
 import static java.util.Arrays.fill;
-import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
 @Embeddable
-@ToString
 public class Board {
 
     private final int[] pits;
@@ -88,7 +84,7 @@ public class Board {
      * Checks if pit is empty.
      *
      * @param pitId pit Id
-     * @return {@code true} if pit is empty, otherwisee {@code false}
+     * @return {@code true} if pit is empty, otherwise {@code false}
      */
     public boolean isEmpty(int pitId) {
 
@@ -143,11 +139,11 @@ public class Board {
      *
      * @return Status map.
      */
-    public Map<Integer, String> getStatus() {
+    public Map<String, String> getStatus() {
 
         return IntStream
                 .range(START_INDEX_PLAYER_1, TOTAL_NUMBER_OF_PITS + 1)
                 .boxed()
-                .collect(toMap(identity(), i -> Integer.toString(pits[i - 1])));
+                .collect(toMap(i -> Integer.toString(i), i -> Integer.toString(pits[i - 1])));
     }
 }
